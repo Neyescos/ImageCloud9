@@ -1,0 +1,31 @@
+﻿@model ImageCloud.Models.ImageViewModel
+
+@{
+    ViewBag.Title = "UploadImage";
+}
+
+<h2>UploadImage</h2>
+
+
+<div class="form-horizontal">
+    <h4>ImageViewModel</h4>
+    <hr />
+
+
+    @using (Html.BeginForm("UploadImage", "Image", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.TextBoxFor(m => m.ImageName, new { type = "text" }) <br />
+        @Html.TextBox("file","", new { type = "file" }) <br />
+        <input type="submit" value="Загрузить" />
+    }
+
+</div>
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

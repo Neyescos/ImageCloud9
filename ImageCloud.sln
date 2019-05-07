@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageCloud", "ImageCloud\ImageCloud.csproj", "{B354F3DE-1284-4871-AD27-ABDAD0F06A0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageCloudPL", "ImageCloud\ImageCloudPL.csproj", "{B354F3DE-1284-4871-AD27-ABDAD0F06A0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageCloudDAL", "ImageCloudDAL\ImageCloudDAL.csproj", "{57625EB1-CEC3-4CD3-B624-D7604B518CFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageCloudBLL", "ImageCloudBLL\ImageCloudBLL.csproj", "{02CAEBAF-0426-474F-9187-7BD73B1A1467}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageCloudDAL.Tests", "ImageCloudDAL.Tests\ImageCloudDAL.Tests.csproj", "{5AE9E2F5-31CA-45E4-A0EE-BA002F070130}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageCloudBLL.Tests", "ImageCloudBLL.Tests\ImageCloudBLL.Tests.csproj", "{A51B1225-B477-4CAB-9312-9A3270D17A05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +23,22 @@ Global
 		{B354F3DE-1284-4871-AD27-ABDAD0F06A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B354F3DE-1284-4871-AD27-ABDAD0F06A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B354F3DE-1284-4871-AD27-ABDAD0F06A0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57625EB1-CEC3-4CD3-B624-D7604B518CFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57625EB1-CEC3-4CD3-B624-D7604B518CFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57625EB1-CEC3-4CD3-B624-D7604B518CFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57625EB1-CEC3-4CD3-B624-D7604B518CFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02CAEBAF-0426-474F-9187-7BD73B1A1467}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02CAEBAF-0426-474F-9187-7BD73B1A1467}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02CAEBAF-0426-474F-9187-7BD73B1A1467}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02CAEBAF-0426-474F-9187-7BD73B1A1467}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AE9E2F5-31CA-45E4-A0EE-BA002F070130}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AE9E2F5-31CA-45E4-A0EE-BA002F070130}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AE9E2F5-31CA-45E4-A0EE-BA002F070130}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AE9E2F5-31CA-45E4-A0EE-BA002F070130}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A51B1225-B477-4CAB-9312-9A3270D17A05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A51B1225-B477-4CAB-9312-9A3270D17A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A51B1225-B477-4CAB-9312-9A3270D17A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A51B1225-B477-4CAB-9312-9A3270D17A05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
