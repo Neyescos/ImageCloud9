@@ -15,6 +15,7 @@ namespace ImageCloud.Controllers
     public class ImageController : Controller
     {
         IService<ImageDTO> service;
+        
         public ImageController (IService<ImageDTO> serv)
         {
             service = serv;
@@ -25,7 +26,7 @@ namespace ImageCloud.Controllers
             List<ImageViewModel> l = new List<ImageViewModel>();
             foreach(var element in imageDtos)
             {
-                l.Add(new ImageViewModel { ImageName = element.ImageName, ImageDate = element.ImageDate, Picture = element.Picture });
+                l.Add(new ImageViewModel { Id = element.Id, ImageName = element.ImageName, ImageDate = element.ImageDate, Picture = element.Picture });
             }
             return View(l);
         }
@@ -40,11 +41,33 @@ namespace ImageCloud.Controllers
         {
             var fileName = Path.GetFileName(file.FileName);
             file.SaveAs(Server.MapPath("~/Data/Pictures/" + fileName));
-            ImageDTO uploaded = new ImageDTO { ImageName = imageViewModel.ImageName, ImageDate = DateTime.Now, Picture = Server.MapPath("~/Data/Pictures/" + fileName) };
+            ImageDTO uploaded = new ImageDTO { ImageName = imageViewModel.ImageName, ImageDate = DateTime.Now, Picture = "~/Data/Pictures/" + fileName };
             service.Make(uploaded);
 
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public ActionResult Delete(int?id)
+        {
+            var im = service.GetElement(id);
+            ImageViewModel image = new ImageViewModel { Id = im.Id, ImageDate= im.ImageDate, ImageName = im.ImageName, Picture = im.Picture, UserId = im.UserId };
+            return View(image);
+        }
+        [HttpPost]
+        public ActionResult Delete(ImageViewModel imageViewModel)
+        {
+
+            service.Delete(new ImageDTO { Id = imageViewModel.Id, ImageDate = imageViewModel.ImageDate, ImageName = imageViewModel.ImageName, Picture = imageViewModel.Picture, UserId = imageViewModel.UserId });
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public ActionResult Details(int?id)
+        {
+            var im = service.GetElement(id);
+            return View(new ImageViewModel { Id = im.Id, ImageDate = im.ImageDate, ImageName = im.ImageName, Picture = im.Picture, UserId = im.UserId });
+        }
+  
+       
         public ActionResult About()
         {
 
@@ -52,7 +75,7 @@ namespace ImageCloud.Controllers
 
             return View();
         }
-
+        
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

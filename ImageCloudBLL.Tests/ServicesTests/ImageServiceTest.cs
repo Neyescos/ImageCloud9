@@ -5,16 +5,17 @@ using ImageCloudDAL.Entities;
 using ImageCloudDAL.Interfaces;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace ImageCloudBLL.Tests.ServicesTests
-{ [TestFixture]
+{
+    [TestFixture]
   public class ImageServiceTest
     {
+        private const string name = @"C:\Users\Андрей\Pictures\jakub-rozalski-digital-painting0.jpg";
         public IUnitOfWork work = new EFUnitOfWork();
         [Test]
         public void GetElements()
@@ -27,8 +28,11 @@ namespace ImageCloudBLL.Tests.ServicesTests
         [Test]
         public void GetElement()
         {
+
+           
+            var fileName = Path.GetFileName(name);
             ImageService service = new ImageService(work);
-            ImageDTO picture = new ImageDTO { Id = 1, ImageName = "Pupkina zalupkina", ImageDate = DateTime.Now, UserId = 1, Picture = System.Drawing.Image.FromFile(@"C:\Users\Андрей\Pictures\jakub-rozalski-digital-painting0.jpg") };
+            ImageDTO picture = new ImageDTO { Id = 1, ImageName = "Pupkina zalupkina", ImageDate = DateTime.Now, UserId = 1, Picture = Server.MapPath("~/Data/Pictures/" + fileName) };
             service.Make(picture);
             work.Save();
             Assert.AreEqual(service.GetElement(2), picture);
@@ -36,11 +40,14 @@ namespace ImageCloudBLL.Tests.ServicesTests
         [Test]
         public void Make()
         {
+            
+
+            var fileName = Path.GetFileName(name);
             Func<Image, bool> func = d => d.ImageName == "Pupkina zalupkina";
 
             ImageService service = new ImageService(work);
             
-            ImageDTO img = new ImageDTO { ImageName = "Pupkina zalupkina", ImageDate = DateTime.Now, UserId = 1, Picture = System.Drawing.Image.FromFile(@"C:\Users\Андрей\Pictures\jakub-rozalski-digital-painting0.jpg") };
+            ImageDTO img = new ImageDTO { ImageName = "Pupkina zalupkina", ImageDate = DateTime.Now, UserId = 1, Picture = Server.MapPath("~/Data/Pictures/" + fileName) };
             service.Make(img);
             work.Save();
             Image im = work.Images.Find(func).ElementAt(0);
@@ -49,8 +56,11 @@ namespace ImageCloudBLL.Tests.ServicesTests
         [Test]
         public void Delete()
         {
+            
+
+            var fileName = Path.GetFileName(name);
             ImageService service = new ImageService(work);
-            ImageDTO picture = new ImageDTO { Id = 17, ImageName = "Pupkina zalupkina", ImageDate = DateTime.Now, UserId = 1, Picture = System.Drawing.Image.FromFile(@"C:\Users\Андрей\Pictures\jakub-rozalski-digital-painting0.jpg") };
+            ImageDTO picture = new ImageDTO { Id = 17, ImageName = "Pupkina zalupkina", ImageDate = DateTime.Now, UserId = 1, Picture = Server.MapPath("~/Data/Pictures/" + fileName) };
             service.Delete(picture);
             work.Save();
             Assert.IsNull(service.GetElement(19));

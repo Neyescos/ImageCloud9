@@ -19,7 +19,7 @@ namespace ImageCloudDAL.Tests.RepositoryTests
             work.Images.Create(new Image {
                 Id = 1,
                 ImageName = "NewImage",
-                ImageCode = null,
+                FileAdress = null,
                 ImageDate = new DateTime(),
                 UserId = 1,
             });
@@ -33,7 +33,7 @@ namespace ImageCloudDAL.Tests.RepositoryTests
             {
                 Id = 1,
                 ImageName = "I34",
-                ImageCode = null,
+                FileAdress = null,
                 ImageDate = new DateTime(),
                 UserId = 1,
             });
