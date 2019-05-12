@@ -21,7 +21,7 @@ namespace ImageCloudDAL.EF
         {
         }
 
-       
+        
     }
     public class ImageDbInitializer : DropCreateDatabaseIfModelChanges<ImageContext>
     {

@@ -39,12 +39,11 @@
         </dt>
 
         <dd>
-            
+            <img src=@Url.Content(Model.Picture) class="img-thumbnail" width="500"  />
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

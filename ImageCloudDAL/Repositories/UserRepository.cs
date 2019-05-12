@@ -4,6 +4,7 @@ using ImageCloudDAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace UserCloudDAL.Repositories
 
             public void Update(User element)
             {
-                db.Entry(element).State = EntityState.Modified;
+                db.Set<User>().AddOrUpdate(element);
             }
 
             public IEnumerable<User> Find(Func<User, Boolean> predicate)

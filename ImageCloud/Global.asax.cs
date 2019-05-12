@@ -24,10 +24,15 @@ namespace ImageCloud
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+
+
             NinjectModule imageModule = new ImageModule();
+            NinjectModule userModule = new UserModule();
             NinjectModule serviceModule = new ServiceModule("NewDb");
-            var kernel = new StandardKernel(imageModule, serviceModule);
+            var kernel = new StandardKernel(userModule,imageModule, serviceModule);
             DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
+
 
         }
     }

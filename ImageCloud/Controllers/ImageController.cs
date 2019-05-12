@@ -22,13 +22,25 @@ namespace ImageCloud.Controllers
         }
         public ActionResult Index()
         {
-            IEnumerable<ImageDTO> imageDtos = service.GetElements();
-            List<ImageViewModel> l = new List<ImageViewModel>();
-            foreach(var element in imageDtos)
+            if (Variables.Variables.CurrentUser != null)
             {
-                l.Add(new ImageViewModel { Id = element.Id, ImageName = element.ImageName, ImageDate = element.ImageDate, Picture = element.Picture });
+                IEnumerable<ImageDTO> imageDtos = service.GetElements();
+
+                List<ImageViewModel> l = new List<ImageViewModel>();
+                foreach (var element in imageDtos)
+                {
+                    if(Variables.Variables.CurrentUser.UserRole == "Admin")
+                    {
+                        l.Add(new ImageViewModel { Id = element.Id, ImageDate = element.ImageDate, ImageName = element.ImageName, Picture = element.Picture, UserId = element.UserId });
+                    }
+                    if (Variables.Variables.CurrentUser.UserRole == "Simple User" && Variables.Variables.CurrentUser.Id == element.UserId ) 
+                    {
+                        l.Add(new ImageViewModel { Id = element.Id, ImageName = element.ImageName, ImageDate = element.ImageDate, Picture = element.Picture, UserId = element.UserId });
+                    }
+                }
+                return View(l);
             }
-            return View(l);
+            return View();
         }
         [HttpGet]
         public ActionResult UploadImage()
@@ -41,7 +53,7 @@ namespace ImageCloud.Controllers
         {
             var fileName = Path.GetFileName(file.FileName);
             file.SaveAs(Server.MapPath("~/Data/Pictures/" + fileName));
-            ImageDTO uploaded = new ImageDTO { ImageName = imageViewModel.ImageName, ImageDate = DateTime.Now, Picture = "~/Data/Pictures/" + fileName };
+            ImageDTO uploaded = new ImageDTO { ImageName = imageViewModel.ImageName, ImageDate = DateTime.Now, Picture = "~/Data/Pictures/" + fileName, UserId = Variables.Variables.CurrentUser.Id };
             service.Make(uploaded);
 
             return RedirectToAction("Index");
@@ -66,7 +78,7 @@ namespace ImageCloud.Controllers
             var im = service.GetElement(id);
             return View(new ImageViewModel { Id = im.Id, ImageDate = im.ImageDate, ImageName = im.ImageName, Picture = im.Picture, UserId = im.UserId });
         }
-  
+        
        
         public ActionResult About()
         {

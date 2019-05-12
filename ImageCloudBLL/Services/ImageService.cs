@@ -74,5 +74,9 @@ namespace ImageCloudBLL.Services
             Database.Save();
         }
 
+        public ImageDTO Find(Func<User, bool> predicate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImageCloudDAL.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace ImageCloudBLL.Interfaces
         void Delete(T Element);
         T GetElement(int? id);
         IEnumerable<T> GetElements();
+        T Find(Func<User, Boolean> predicate);
         void Dispose();
     }
 }

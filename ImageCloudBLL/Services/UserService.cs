@@ -14,7 +14,7 @@ namespace ImageCloudBLL.Services
     public class UserService : IService<UserDTO>
     {
         IUnitOfWork Database { get; set; }
-
+        Mailer mail = new Mailer();
         public  UserService (IUnitOfWork uow)
         {
             Database = uow;
@@ -22,8 +22,7 @@ namespace ImageCloudBLL.Services
 
         public void Change(UserDTO Element)
         {
-            User user = new User { Id = Element.Id, Email = Element.Email, IsBanned = Element.IsBanned, IsEmailVerified = Element.IsEmailVerified, UserName = Element.UserName, UserPassword = Element.Password, UserRole = Element.UserRole };
-            Database.Users.Update(user);
+            Database.Users.Update(new User { Id = Element.Id, Email = Element.Email, IsBanned = Element.IsBanned, IsEmailVerified = Element.IsEmailVerified, UserName = Element.UserName, UserPassword = Element.Password, UserRole = Element.UserRole });
             Database.Save();
         }
 
@@ -63,12 +62,20 @@ namespace ImageCloudBLL.Services
             return users;
         }
 
-        public void Make(UserDTO Element)
+        public  void Make(UserDTO Element)
         {
             User user = new User { Email = Element.Email, Id = Element.Id, UserRole = Element.UserRole, IsBanned = Element.IsBanned, IsEmailVerified = false, UserName = Element.UserName, UserPassword = Element.Password };
             Database.Users.Create(user);
-
+            
             Database.Save();
+            Func<User, bool> f = m => m.Email == Element.Email;
+            mail.SendMail(Database.Users.Find(f).First());
+        }
+
+        public UserDTO Find(Func<User, bool> predicate)
+        {
+            var user = Database.Users.Find(predicate).First();
+            return new UserDTO { Email = user.Email, Id = user.Id, IsBanned = user.IsBanned, IsEmailVerified = user.IsEmailVerified, Password = user.UserPassword, UserName = user.UserName, UserRole = user.UserRole };
         }
     }
 }
