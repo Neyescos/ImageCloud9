@@ -37,6 +37,7 @@
                             <li>@Html.ActionLink("Пользователи", "Index", "User")</li>
                         }
                         <li>@Html.ActionLink(Variables.CurrentUser.UserName, "Index", "Image")</li>
+                        <li>@Html.ActionLink("Выйти", "SignOut", "User")</li>
                     }
                 </ul>
             </div>
@@ -46,7 +47,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year – приложение ASP.NET</p>
+            <p>&copy; @DateTime.Now.Year – Creator Rabeshko A.V.</p>
         </footer>
     </div>
 

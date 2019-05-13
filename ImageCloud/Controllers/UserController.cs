@@ -41,9 +41,55 @@ namespace ImageCloud.Controllers
         [HttpPost]
         public ActionResult CreateUser(UserViewModel userViewModel)
         {
-            UserDTO user = new UserDTO { UserRole = "Simple User", Email = userViewModel.Email, Id = userViewModel.Id, IsBanned = userViewModel.IsBanned, IsEmailVerified = userViewModel.IsEmailVerified, Password = userViewModel.Password, UserName = userViewModel.UserName };
-            service.Make(user);
-            return RedirectToAction("Index");
+
+            //блок валидации
+            bool f(User m) { return m.Email == userViewModel.Email; };
+            var el = service.Find(f);
+            if (userViewModel.Email == el.Email)
+            {
+                ModelState.AddModelError("Email", "На данную почту уже зарегистрирован аккаунт ImageCloud");
+            }
+            bool f1(User m) { return m.UserName == userViewModel.UserName; };
+            var el1 = service.Find(f1);
+            if(userViewModel.UserName == el.UserName)
+            {
+                ModelState.AddModelError("UserName", "Пользователь с таким ником уже зарегистрирован");
+            }
+            if (string.IsNullOrEmpty(userViewModel.UserName))
+            {
+                ModelState.AddModelError("UserName", "Введите имя пользователя");
+            }
+            else if (userViewModel.UserName.Length > 20)
+            {
+                ModelState.AddModelError("UserName", "ВЫберите имя покороче");
+            }
+
+            if (string.IsNullOrEmpty(userViewModel.Password))
+            {
+                ModelState.AddModelError("Password", "Введите пароль");
+            }
+            else if(userViewModel.Password.Length <8)
+            {
+                ModelState.AddModelError("Password", "Пароль должен быть не менее 8 символов");
+            }
+
+            if (string.IsNullOrEmpty(userViewModel.Email))
+            {
+                ModelState.AddModelError("Email", "Введите адрес электронной почты , на него будет отправлено письмо подтверждения");
+            }
+            else if (userViewModel.Email.Length < 5)
+            {
+                ModelState.AddModelError("Email", "Введите адрес электронной почты");
+            }
+            //блок создания пользователя
+            if(ModelState.IsValid)
+            {
+                UserDTO user = new UserDTO { UserRole = "Simple User", Email = userViewModel.Email, Id = userViewModel.Id, IsBanned = userViewModel.IsBanned, IsEmailVerified = userViewModel.IsEmailVerified, Password = userViewModel.Password, UserName = userViewModel.UserName };
+                service.Make(user);
+                return RedirectToAction("Index");
+            }
+            ViewBag.Messege = "Запрос не прошел валидацию";
+            return View(userViewModel);
         }
         [HttpGet]
         public ActionResult Delete(int?id)
@@ -91,6 +137,12 @@ namespace ImageCloud.Controllers
             service.Change(el);
             Variables.Variables.CurrentUser = new UserV { IsEmailVerified = el.IsEmailVerified, Email = el.Email, Id = el.Id, IsBanned = el.IsBanned, Password = el.Password, UserName = el.UserName, UserRole = el.UserRole };
             return RedirectToAction("Index","Image");
+        }
+        [HttpGet]
+        public ActionResult SignOut()
+        {
+            Variables.Variables.CurrentUser = null;
+            return RedirectToAction("SignIn");
         }
     }
 }
