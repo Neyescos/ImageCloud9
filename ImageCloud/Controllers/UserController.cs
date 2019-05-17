@@ -44,45 +44,51 @@ namespace ImageCloud.Controllers
 
             //блок валидации
             bool f(User m) { return m.Email == userViewModel.Email; };
-            var el = service.Find(f);
-            if (userViewModel.Email == el.Email)
+            UserDTO el = new UserDTO();
+            el = service.Find(f);
+            if (el!=null)
             {
-                ModelState.AddModelError("Email", "На данную почту уже зарегистрирован аккаунт ImageCloud");
-            }
-            bool f1(User m) { return m.UserName == userViewModel.UserName; };
-            var el1 = service.Find(f1);
-            if(userViewModel.UserName == el.UserName)
-            {
-                ModelState.AddModelError("UserName", "Пользователь с таким ником уже зарегистрирован");
-            }
-            if (string.IsNullOrEmpty(userViewModel.UserName))
-            {
-                ModelState.AddModelError("UserName", "Введите имя пользователя");
-            }
-            else if (userViewModel.UserName.Length > 20)
-            {
-                ModelState.AddModelError("UserName", "ВЫберите имя покороче");
+                if (userViewModel.Email == el.Email)
+                {
+                    ModelState.AddModelError("Email", "На данную почту уже зарегистрирован аккаунт ImageCloud");
+                }
+
+                bool f1(User m) { return m.UserName == userViewModel.UserName; };
+                var el1 = service.Find(f1);
+                if (userViewModel.UserName == el1.UserName)
+                {
+                    ModelState.AddModelError("UserName", "Пользователь с таким ником уже зарегистрирован");
+                }
             }
 
-            if (string.IsNullOrEmpty(userViewModel.Password))
-            {
-                ModelState.AddModelError("Password", "Введите пароль");
-            }
-            else if(userViewModel.Password.Length <8)
-            {
-                ModelState.AddModelError("Password", "Пароль должен быть не менее 8 символов");
-            }
+                if (string.IsNullOrEmpty(userViewModel.UserName))
+                {
+                    ModelState.AddModelError("UserName", "Введите имя пользователя");
+                }
+                else if (userViewModel.UserName.Length > 20)
+                {
+                    ModelState.AddModelError("UserName", "ВЫберите имя покороче");
+                }
 
-            if (string.IsNullOrEmpty(userViewModel.Email))
-            {
-                ModelState.AddModelError("Email", "Введите адрес электронной почты , на него будет отправлено письмо подтверждения");
-            }
-            else if (userViewModel.Email.Length < 5)
-            {
-                ModelState.AddModelError("Email", "Введите адрес электронной почты");
-            }
+                if (string.IsNullOrEmpty(userViewModel.Password))
+                {
+                    ModelState.AddModelError("Password", "Введите пароль");
+                }
+                else if (userViewModel.Password.Length < 8)
+                {
+                    ModelState.AddModelError("Password", "Пароль должен быть не менее 8 символов");
+                }
+
+                if (string.IsNullOrEmpty(userViewModel.Email))
+                {
+                    ModelState.AddModelError("Email", "Введите адрес электронной почты , на него будет отправлено письмо подтверждения");
+                }
+                else if (userViewModel.Email.Length < 6)
+                {
+                    ModelState.AddModelError("Email", "Введите адрес электронной почты");
+                }
             //блок создания пользователя
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 UserDTO user = new UserDTO { UserRole = "Simple User", Email = userViewModel.Email, Id = userViewModel.Id, IsBanned = userViewModel.IsBanned, IsEmailVerified = userViewModel.IsEmailVerified, Password = userViewModel.Password, UserName = userViewModel.UserName };
                 service.Make(user);
@@ -113,7 +119,7 @@ namespace ImageCloud.Controllers
         public ActionResult Edit(UserViewModel user)
         {
             var el = service.GetElement(user.Id);
-            service.Change(new UserDTO { UserName = user.UserName, UserRole = user.UserRole, IsEmailVerified = el.IsEmailVerified, Email = el.Email, Id = user.Id, IsBanned = user.IsBanned, Password = user.Password });
+            service.Change(new UserDTO { UserName = user.UserName, UserRole = user.UserRole, IsEmailVerified = el.IsEmailVerified, Email = el.Email, Id = user.Id, IsBanned = user.IsBanned, Password = el.Password });
             return RedirectToAction("Index");
         }
         [HttpGet]
@@ -124,10 +130,37 @@ namespace ImageCloud.Controllers
         [HttpPost]
         public ActionResult SignIn(UserViewModel user)
         {
+            
+            if (user.Email == null)
+            {
+                ModelState.AddModelError("Email", "Введите эллектронную почту");
+            }
+
             bool f(User m) { return m.Email == user.Email && m.UserPassword == user.Password; };
             var el = service.Find(f);
-            Variables.Variables.CurrentUser = new UserV { Email = el.Email, Id = el.Id, Password = el.Password, IsBanned = el.IsBanned, IsEmailVerified = el.IsEmailVerified, UserName = el.UserName, UserRole = el.UserRole }; 
-            return RedirectToAction("Index");
+            if(el ==null)
+            {
+                ModelState.AddModelError("Email", "Неправильно введена эллектронная почта или пароль");
+            }
+            
+            if(el.IsEmailVerified == false)
+            {
+                ModelState.AddModelError("IsEmailVerified", "Ваша почта не подтверждена");
+            }
+            if (el.IsBanned == true)
+            {
+                ModelState.AddModelError("IsBanned", "Зобанен лох");
+            }
+            if (ModelState.IsValid)
+            {
+                Variables.Variables.CurrentUser = new UserV { Email = el.Email, Id = el.Id, Password = el.Password, IsBanned = el.IsBanned, IsEmailVerified = el.IsEmailVerified, UserName = el.UserName, UserRole = el.UserRole };
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View();
+            }
+            
         }
         [HttpGet]
         public ActionResult ConfirmEmail(int?id)

@@ -8,9 +8,11 @@
 @if (Variables.CurrentUser != null)
 {
     <h2>Images</h2>
-    <p>
+    <h3>
         @Html.ActionLink("Create New", "UploadImage")
-    </p>
+    </h3>
+    
+    
     <table class="table">
         <tr>
             <th>
@@ -55,11 +57,13 @@
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                 </td>
             </tr>
+          
         }
 
     </table>
 }
 else
 {
-    <p>Пока вы не имеете доступа к этой вкладке</p>
+   <h3>Приветствуем вас в новом сервисе ImageCloud</h3>
+   <h4>Чтобы воспользоваться сервисом необходимо Зарегистрироваться или Войти в Аккаунт</h4>
 }

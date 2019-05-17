@@ -22,7 +22,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Домашняя страница", "Index", "Image")</li>
+                    
 
 
                     @if (Variables.CurrentUser == null)
@@ -36,7 +36,7 @@
                         {
                             <li>@Html.ActionLink("Пользователи", "Index", "User")</li>
                         }
-                        <li>@Html.ActionLink(Variables.CurrentUser.UserName, "Index", "Image")</li>
+                        <li>@Html.ActionLink(Variables.CurrentUser.UserName,"","")</li>
                         <li>@Html.ActionLink("Выйти", "SignOut", "User")</li>
                     }
                 </ul>

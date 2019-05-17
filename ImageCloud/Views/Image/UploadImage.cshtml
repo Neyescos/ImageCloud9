@@ -4,7 +4,7 @@
     ViewBag.Title = "UploadImage";
 }
 
-<h2>Upload Image</h2>
+
 
 
 <div class="form-horizontal">
@@ -14,17 +14,19 @@
 
     @using (Html.BeginForm("UploadImage", "Image", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
+        <h6>Введите название</h6>
         @Html.TextBoxFor(m => m.ImageName, new { type = "text" }) <br />
+        <br />
         @Html.TextBox("file","", new { type = "file" }) <br />
         <input type="submit" value="Загрузить" />
     }
 
 </div>
 
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<hr/>
+<h5>
+    @Html.ActionLink("Back to Image List", "Index")
+</h5>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

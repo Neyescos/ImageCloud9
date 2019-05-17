@@ -74,8 +74,17 @@ namespace ImageCloudBLL.Services
 
         public UserDTO Find(Func<User, bool> predicate)
         {
-            var user = Database.Users.Find(predicate).First();
-            return new UserDTO { Email = user.Email, Id = user.Id, IsBanned = user.IsBanned, IsEmailVerified = user.IsEmailVerified, Password = user.UserPassword, UserName = user.UserName, UserRole = user.UserRole };
+            try
+            {
+                
+                User user = Database.Users.Find(predicate).First();
+                return new UserDTO { Email = user.Email, Id = user.Id, IsBanned = user.IsBanned, IsEmailVerified = user.IsEmailVerified, Password = user.UserPassword, UserName = user.UserName, UserRole = user.UserRole };
+            }
+            catch
+            {
+                return null;
+            }
+
         }
     }
 }
