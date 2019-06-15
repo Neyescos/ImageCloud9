@@ -38,24 +38,23 @@ namespace ImageCloud.Controllers
         {
             return View();
         }
+        
         [HttpPost]
         public ActionResult CreateUser(UserViewModel userViewModel)
         {
-
-            //блок валидации
             bool f(User m) { return m.Email == userViewModel.Email; };
-            UserDTO el = new UserDTO();
-            el = service.Find(f);
-            if (el!=null)
+            UserDTO UserFormData = new UserDTO();
+            UserFormData = service.Find(f);
+            if (UserFormData!=null)
             {
-                if (userViewModel.Email == el.Email)
+                if (userViewModel.Email == UserFormData.Email)
                 {
                     ModelState.AddModelError("Email", "На данную почту уже зарегистрирован аккаунт ImageCloud");
                 }
 
                 bool f1(User m) { return m.UserName == userViewModel.UserName; };
                 var el1 = service.Find(f1);
-                if (userViewModel.UserName == el1.UserName)
+                if (el1 != null && userViewModel.UserName == el1.UserName)
                 {
                     ModelState.AddModelError("UserName", "Пользователь с таким ником уже зарегистрирован");
                 }
@@ -83,11 +82,11 @@ namespace ImageCloud.Controllers
                 {
                     ModelState.AddModelError("Email", "Введите адрес электронной почты , на него будет отправлено письмо подтверждения");
                 }
-                else if (userViewModel.Email.Length < 6)
+                else if (userViewModel.Email.Length <6)
                 {
-                    ModelState.AddModelError("Email", "Введите адрес электронной почты");
+                    ModelState.AddModelError("Email", "Адрес электронной почты введен некорректно");
                 }
-            //блок создания пользователя
+            
             if (ModelState.IsValid)
             {
                 UserDTO user = new UserDTO { UserRole = "Simple User", Email = userViewModel.Email, Id = userViewModel.Id, IsBanned = userViewModel.IsBanned, IsEmailVerified = userViewModel.IsEmailVerified, Password = userViewModel.Password, UserName = userViewModel.UserName };
@@ -142,14 +141,14 @@ namespace ImageCloud.Controllers
             {
                 ModelState.AddModelError("Email", "Неправильно введена эллектронная почта или пароль");
             }
-            
-            if(el.IsEmailVerified == false)
+
+            if (el != null && el.IsEmailVerified == false)
             {
                 ModelState.AddModelError("IsEmailVerified", "Ваша почта не подтверждена");
             }
-            if (el.IsBanned == true)
+            if (user.IsBanned == true)
             {
-                ModelState.AddModelError("IsBanned", "Зобанен лох");
+                ModelState.AddModelError("IsBanned", "Вход на этот сайт данному пользователю был запрещен");
             }
             if (ModelState.IsValid)
             {

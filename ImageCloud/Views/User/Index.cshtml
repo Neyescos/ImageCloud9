@@ -6,7 +6,7 @@
 @using ImageCloud.Variables;
 @if (Variables.CurrentUser != null && Variables.CurrentUser.UserRole == "Admin")
 {
-    <h2>User List</h2>
+    
 
 
     <table class="table">
@@ -60,8 +60,11 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    <div class="btn-group">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-info" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-info" })
+                    </div>
+                   
                 </td>
             </tr>
         }
@@ -70,6 +73,6 @@
 }
 else
 {
-    <h3>Приветствуем вас в новом сервисе ImageCloud</h3>
-    <h4>Чтобы воспользоваться сервисом необходимо Зарегистрироваться или Войти в Аккаунт</h4>
+    <h5>Приветствуем вас в новом сервисе ImageCloud</h5>
+    <p>Чтобы воспользоваться сервисом необходимо @Html.ActionLink("Зарегистрироваться", "CreateUser", new { controller = "User" }, new { @class = "badge badge-pill badge-info" }) или  @Html.ActionLink("Войти", "SignIn", new { controller = "User" }, new { @class = "badge badge-pill badge-info" }) в Аккаунт</p>
 }

@@ -7,26 +7,31 @@
 
 
 
-<div class="form-horizontal">
-    <h4>Download new Image</h4>
-    <hr />
-
+<div class="form-horizontal mt-5">
 
     @using (Html.BeginForm("UploadImage", "Image", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-        <h6>Введите название</h6>
-        @Html.TextBoxFor(m => m.ImageName, new { type = "text" }) <br />
+
+        <div class="form-group ">
+            @Html.LabelFor(m => m.ImageName, htmlAttributes: new { @class = "control-label " })
+            <div >
+                @Html.EditorFor(m => m.ImageName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.ImageName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="custom-file col-md-3">
+            <input type="file" name="file" class="custom-file-input" id="inputGroupFile01">
+            <label class="custom-file-label " for="inputGroupFile01">Choose file</label>
+        </div>
         <br />
-        @Html.TextBox("file","", new { type = "file" }) <br />
-        <input type="submit" value="Загрузить" />
+        <div class="btn-group">
+            <input type="submit" value="Upload" class="btn btn-dark mt-4" />
+            @Html.ActionLink("Back to Image List", "Index", "Image", new { @class = "btn btn-info mt-4 " })
+        </div>
+
     }
 
 </div>
-
-<hr/>
-<h5>
-    @Html.ActionLink("Back to Image List", "Index")
-</h5>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

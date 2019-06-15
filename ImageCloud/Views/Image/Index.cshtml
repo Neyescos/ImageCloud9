@@ -7,63 +7,34 @@
 
 @if (Variables.CurrentUser != null)
 {
-    <h2>Images</h2>
-    <h3>
-        @Html.ActionLink("Create New", "UploadImage")
-    </h3>
-    
-    
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageDate)
-            </th>
-            @if (Variables.CurrentUser.UserRole == "Admin")
-            {
-                <th>
-                    @Html.DisplayNameFor(model => model.UserId)
-                </th>
-            }
-
-            <th>
-                @Html.DisplayName("__")
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
+    <div class="fixed-bottom">
+        <div class="float-right">
+            @Html.ActionLink("Create New", "UploadImage", new { controller = "Image" }, new { @class = "btn btn-info" })
+        </div>
+    </div>
+    <div class="container">
+         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ImageName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ImageDate)
-                </td>
-                @if (Variables.CurrentUser.UserRole == "Admin")
-                {
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserId)
-                    </td>
-                }
-                <td>
-                    <img src=@Url.Content(item.Picture) class="img-thumbnail" width="50" height="50" />
-                </td>
-                <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
-            </tr>
-          
+            <div class="card bg-dark text-white">
+                <img class="card-img" src=@Url.Content(item.Picture) alt="Card image" style="height:500px">
+                <div class="card-img-overlay bg-info" style="width:17%">
+                    <h5 class="card-title bg-info"> @Html.DisplayFor(modelItem => item.ImageName)</h5>
+                    <p class="card-text bg-info">@Html.DisplayFor(modelItem => item.ImageDate)</p>
+                    <div class="btn-group">
+                        <form action=@Url.Content("/Image/Details/"+item.Id.ToString())>
+                            <input type="submit" value="Details" class="btn btn-outline-light" />
+                        </form>
+                        <form action=@Url.Content("/Image/Delete/"+item.Id.ToString())>
+                            <input type="submit" value="Delete" class="btn btn-outline-light" />
+                        </form>
+                    </div>
+                </div>
+            </div>
         }
-
-    </table>
+    </div>
 }
 else
 {
-   <h3>Приветствуем вас в новом сервисе ImageCloud</h3>
-   <h4>Чтобы воспользоваться сервисом необходимо Зарегистрироваться или Войти в Аккаунт</h4>
+   <h5>Приветствуем вас в новом сервисе ImageCloud</h5>
+   <p>Чтобы воспользоваться сервисом необходимо @Html.ActionLink("Зарегистрироваться", "CreateUser",new {controller ="User" }, new {@class="badge badge-pill badge-info" }) или  @Html.ActionLink("Войти", "SignIn",new { controller="User"},new { @class= "badge badge-pill badge-info" }) в Аккаунт</p>
 }
