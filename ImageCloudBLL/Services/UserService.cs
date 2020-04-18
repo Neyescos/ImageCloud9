@@ -64,12 +64,12 @@ namespace ImageCloudBLL.Services
 
         public  void Make(UserDTO Element)
         {
-            User user = new User { Email = Element.Email, Id = Element.Id, UserRole = Element.UserRole, IsBanned = Element.IsBanned, IsEmailVerified = false, UserName = Element.UserName, UserPassword = Element.Password };
+            User user = new User { Email = Element.Email, Id = Element.Id, UserRole = Element.UserRole, IsBanned = Element.IsBanned, IsEmailVerified = true, UserName = Element.UserName, UserPassword = Element.Password };
             Database.Users.Create(user);
             
             Database.Save();
-            Func<User, bool> f = m => m.Email == Element.Email;
-            mail.SendMail(Database.Users.Find(f).First());
+           // Func<User, bool> f = m => m.Email == Element.Email;
+           // mail.SendMail(Database.Users.Find(f).First());
         }
 
         public UserDTO Find(Func<User, bool> predicate)

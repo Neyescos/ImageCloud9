@@ -24,6 +24,7 @@ namespace ImageCloudBLL.Infrastructure
             SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
             smtp.Credentials = new NetworkCredential("ImageCloud9@gmail.com", "Sf2zEDDe3H4yGjA");
             smtp.EnableSsl = true;
+            smtp.UseDefaultCredentials = false;
             smtp.Send(m);
         }
     }

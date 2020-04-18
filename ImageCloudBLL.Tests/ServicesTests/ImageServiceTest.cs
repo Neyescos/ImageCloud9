@@ -15,7 +15,7 @@ namespace ImageCloudBLL.Tests.ServicesTests
     [TestFixture]
   public class ImageServiceTest
     {
-        private const string name = @"C:\Users\Андрей\Pictures\jakub-rozalski-digital-painting0.jpg";
+        private const string name = @"C:\Шаражка\Графика\Dope Photo\3\Цветы.JPG";
         public IUnitOfWork work = new EFUnitOfWork();
         [Test]
         public void GetElements()
@@ -32,7 +32,7 @@ namespace ImageCloudBLL.Tests.ServicesTests
            
             var fileName = Path.GetFileName(name);
             ImageService service = new ImageService(work);
-            ImageDTO picture = new ImageDTO { Id = 1, ImageName = "Pupkina zalupkina", ImageDate = DateTime.Now, UserId = 1, Picture = Server.MapPath("~/Data/Pictures/" + fileName) };
+            ImageDTO picture = new ImageDTO { Id = 1, ImageName = "Pupkina zalupkina", ImageDate = DateTime.Now, UserId = 1, Picture = System.Web.HttpContext.Current.Server.MapPath("~/Data/Pictures/" + fileName) };
             service.Make(picture);
             work.Save();
             Assert.AreEqual(service.GetElement(2), picture);
@@ -47,7 +47,7 @@ namespace ImageCloudBLL.Tests.ServicesTests
 
             ImageService service = new ImageService(work);
             
-            ImageDTO img = new ImageDTO { ImageName = "Pupkina zalupkina", ImageDate = DateTime.Now, UserId = 1, Picture = Server.MapPath("~/Data/Pictures/" + fileName) };
+            ImageDTO img = new ImageDTO { ImageName = "Pupkina zalupkina", ImageDate = DateTime.Now, UserId = 1, Picture = System.Web.HttpContext.Current.Server.MapPath("~/Data/Pictures/" + fileName) };
             service.Make(img);
             work.Save();
             Image im = work.Images.Find(func).ElementAt(0);
@@ -60,12 +60,12 @@ namespace ImageCloudBLL.Tests.ServicesTests
 
             var fileName = Path.GetFileName(name);
             ImageService service = new ImageService(work);
-            ImageDTO picture = new ImageDTO { Id = 17, ImageName = "Pupkina zalupkina", ImageDate = DateTime.Now, UserId = 1, Picture = Server.MapPath("~/Data/Pictures/" + fileName) };
+            ImageDTO picture = new ImageDTO { Id = 17, ImageName = "Pupkina zalupkina", ImageDate = DateTime.Now, UserId = 1, Picture = System.Web.HttpContext.Current.Server.MapPath("~/Data/Pictures/" + fileName) };
             service.Delete(picture);
             work.Save();
             Assert.IsNull(service.GetElement(19));
         }
-        [Test]
+       // [Test]
         public void Clear()
         {
             foreach (var el in work.Images.GetAll())
