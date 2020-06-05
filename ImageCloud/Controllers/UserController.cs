@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -44,6 +45,13 @@ namespace ImageCloud.Controllers
         {
             bool f(User m) { return m.Email == userViewModel.Email; };
             UserDTO UserFormData = new UserDTO();
+            //
+            //validation regex block
+            //
+            Regex regexPassword = new Regex(@"(\w{7,})");
+            Regex regexUser = new Regex(@"\w{1,20}");
+            Regex regexEmail = new Regex(@"(\w{6,}@)");
+
             UserFormData = service.Find(f);
             if (UserFormData!=null)
             {
@@ -60,32 +68,23 @@ namespace ImageCloud.Controllers
                 }
             }
 
-                if (string.IsNullOrEmpty(userViewModel.UserName))
+                
+                if (userViewModel.UserName == null || !regexUser.IsMatch(userViewModel.UserName))
                 {
-                    ModelState.AddModelError("UserName", "Введите имя пользователя");
-                }
-                else if (userViewModel.UserName.Length > 20)
-                {
-                    ModelState.AddModelError("UserName", "ВЫберите имя покороче");
+                    ModelState.AddModelError("UserName", "Введите ник или вЫберите имя покороче");
                 }
 
-                if (string.IsNullOrEmpty(userViewModel.Password))
+                if (userViewModel.Password == null || !regexPassword.IsMatch(userViewModel.Password))
                 {
-                    ModelState.AddModelError("Password", "Введите пароль");
+                    ModelState.AddModelError("Password", "Длина пароля должна быть больше 8 символов ");
                 }
-                else if (userViewModel.Password.Length < 8)
-                {
-                    ModelState.AddModelError("Password", "Пароль должен быть не менее 8 символов");
-                }
+              
 
-                if (string.IsNullOrEmpty(userViewModel.Email))
+                if (userViewModel.Email == null || !regexEmail.IsMatch(userViewModel.Email))
                 {
-                    ModelState.AddModelError("Email", "Введите адрес электронной почты , на него будет отправлено письмо подтверждения");
+                    ModelState.AddModelError("Email", "Введите адрес электронной почты ");
                 }
-                else if (userViewModel.Email.Length <6)
-                {
-                    ModelState.AddModelError("Email", "Адрес электронной почты введен некорректно");
-                }
+                
             
             if (ModelState.IsValid)
             {
@@ -153,7 +152,7 @@ namespace ImageCloud.Controllers
             if (ModelState.IsValid)
             {
                 Variables.Variables.CurrentUser = new UserV { Email = el.Email, Id = el.Id, Password = el.Password, IsBanned = el.IsBanned, IsEmailVerified = el.IsEmailVerified, UserName = el.UserName, UserRole = el.UserRole };
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Image");
             }
             else
             {
